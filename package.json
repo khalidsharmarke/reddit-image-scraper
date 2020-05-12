@@ -1,0 +1,16 @@
+{
+  "name": "redditScrapper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "scrapper.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-fetch": "^2.6.0",
+    "zip-folder": "^1.0.0"
+  }
+}
