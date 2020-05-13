@@ -13,6 +13,12 @@ async function scrape(url, num_of_images) {
         folder: `${__dirname}${url.slice(url.lastIndexOf('/'), url.length)}`
     }
 
+    (function(){
+        if (url[url.length - 1] == '/'){
+            status.target.pop();
+        }
+    })()
+
     function parseUrls(body, folder_name) {
         let requestObj = body.data;
 
@@ -93,7 +99,5 @@ async function scrape(url, num_of_images) {
 
     return status.folder
 }
-
-scrape('https://www.reddit.com/r/EarthPorn', 100)
 
 module.exports = scrape
