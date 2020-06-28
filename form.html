@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Reddit Scrapper</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style type="text/css">
+    body {
+        margin: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: #F5D6BA;
+    }
+
+    @keyframes fadein {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    .main {
+        width: 100%;
+        height: 100%;
+        animation: fadein 1s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .heading {
+        margin-top: 5%;
+        text-align: center;
+    }
+
+    .form {
+        width: 50%;
+        background-color: #2C2C54;
+        color: white;
+    }
+
+    .submit {
+        background-color: #F49D6E;
+    }
+
+    #loader {
+        border: 16px solid #f3f3f3;
+        border-top: 16px solid #3498db;
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="heading">
+            <h1>Reddit Image Scrapper</h1>
+            <h6>Enter in a url below and the number of images you want</h6>
+            <h6>You'll receive a zipped folder of content</h6>
+        </div>
+        <div class="jumbotron form">
+            <form>
+                <div class="form-group">
+                    <label for="url">URL:</label>
+                    <input type="url" class="form-control" id="url">
+                </div>
+                <div class="form-group">
+                    <label for="num_of_images">Number of Images:</label>
+                    <input type="number" class="form-control" id="num_of_images">
+                </div>
+                <button type="submit" class="btn submit">Retrieve</button>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript">
+    function getForm() {
+        return {
+            url: document.getElementById('url').value,
+            num_of_images: document.getElementById('num_of_images').value
+        }
+    }
+    function* loading(){
+        const button = document.querySelector('button')
+        let loader = document.createElement('span')
+        loader.className = 'spinner-border spinner-border-sm'
+        button.textContent = 'Retrieving...'
+        button.append(loader)
+        button.disabled = true
+        yield
+        button.innerHTML = 'Retrieve'
+        button.disabled = false
+        return
+    }
+    function request(){
+        return fetch('/', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(getForm())
+            })
+            .then(res => {
+                if (res.status == 400) {
+                    res.text()
+                        .then(text => { throw text })
+                } else if (res.status == 200) {
+                    res.arrayBuffer()
+                        .then(buffer => console.log(buffer))
+                }
+            })
+            .catch(err => {throw err})
+    }
+    document.querySelector('form').addEventListener('submit', async e => {
+        e.preventDefault();
+        const loader = loading()
+        loader.next()
+        await request()
+            .catch(err => alert(err))
+        loader.next()
+    })
+    </script>
+</body>
+
+</html>
