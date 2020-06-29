@@ -1,6 +1,7 @@
 const url = require('url')
 
 function validateRequest(req, res, next) {
+    console.log(req.body)
     if (!req.body) {
         res.status(400).send('no request body, make requests using json bodies')
         return

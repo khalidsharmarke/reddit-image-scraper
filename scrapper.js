@@ -17,10 +17,12 @@ class Scrapper {
                 .then(json => this.parsePage(json))
                 .catch(err => console.log(err))
         }
-        return this.zip.generateNodeStream({ type: 'nodeBuffer', streamFiles: true })
+        return this.zip.generateNodeStream({
+            type: 'nodeBuffer',
+            streamFiles: true
+        })
     }
     getPage() {
-        console.log('getting page')
         return fetch(`${this.target}.json?after=${this.nextPage}`)
             .then(res => res.json())
             .catch(err => err)
@@ -58,8 +60,8 @@ class Scrapper {
     }
 }
 
-async function fulfillRequest(req_obj){
-    const {url, num_of_images, subreddit} = req_obj;
+async function fulfillRequest(req_obj) {
+    const { url, num_of_images, subreddit } = req_obj;
     return new Scrapper(url, num_of_images, subreddit).run()
 }
 
