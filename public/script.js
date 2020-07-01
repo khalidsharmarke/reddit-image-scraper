@@ -3,11 +3,9 @@
         const num_of_images = document.getElementById('num_of_images').value
 
         if (url == '' || num_of_images == '') {
-            alert('please fill form before submitting')
-            return
+            throw new Error('please fill form before submitting')
         } else if (!url.includes('http://www.reddit.com/r/') && !url.includes('https://www.reddit.com/r/')) {
-            alert('please provide full url')
-            return
+            throw new Error('please provide full url')
         }
         return {
             url: url,
@@ -31,8 +29,6 @@
 
     function request() {
         const form = getForm()
-        if (!form) return
-            console.log(form)
         return fetch('/', {
                 method: 'POST',
                 headers: {
@@ -41,24 +37,28 @@
                 body: JSON.stringify(form)
             })
             .then(res => {
-                if (res.status == 400) {
+                if (res.status != 200) {
                     res.text()
-                        .then(text => { throw text })
-                } else if (res.status == 200) {
+                        .then(text => alert(text))
+                        .catch(err => alert(err.message))
+                } else {
                     res.arrayBuffer()
                         .then(async buffer =>
-                            await download(buffer, res.headers.get('content-disposition').split('filename=')[1].split(';')[0], 'application/zip'))
-                        .catch(err => {throw err})
+                            download(buffer, res.headers.get('Content-Disposition').split('filename=')[1].split(';')[0], 'application/zip'))
+                        .catch(err => alert(err.message))
                 }
             })
-            .catch(err => { throw err })
+            .catch(err => alert(err.message))
     }
 
     document.querySelector('form').addEventListener('submit', async e => {
         e.preventDefault();
         const loader = loading()
         loader.next()
-        await request()
-            .catch(err => alert(err))
+        try {
+            await request()
+        } catch (err) {
+            alert(err.message)
+        }
         loader.next()
     })

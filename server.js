@@ -22,8 +22,7 @@ app.post('/', validate, sanitize, async (req, res) => {
 		await streamPipeline(zipstream, res)
 		res.end()
 	} catch(err){
-		console.error(err)
-		res.send(err)
+		res.status(404).send(err.message)
 	}
 })
 

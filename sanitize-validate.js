@@ -34,7 +34,10 @@ function validateRequest(req, res, next) {
     } else if (!request.path.includes('/r/')) {
         res.status(400).send('please request a specific subreddit')
         return
-    } else {
+    } else if(request.path == '/r/'){
+        res.status(400).send('please request a specific subreddit')
+        return
+    }else {
         req.locals = { ...request, 
             num_of_images: req.body.num_of_images, 
             mobile: req.query.mobile }

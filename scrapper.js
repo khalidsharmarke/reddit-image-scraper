@@ -10,9 +10,9 @@ class Scrapper {
         this.folder = this.zip.folder(name)
         this.count = 0
         this.nextPage = ''
-        if (mobile){
+        if (mobile) {
             this.ratio = 0.5625
-        }else {
+        } else {
             this.ratio = 1.7
         }
     }
@@ -22,8 +22,7 @@ class Scrapper {
                 await this.getPage()
                     .then(json => this.parsePage(json))
             } catch (err) {
-                console.error(err)
-                break
+                throw err
             }
         }
         return this.zip.generateNodeStream({
@@ -33,10 +32,20 @@ class Scrapper {
     }
     getPage() {
         return fetch(`${this.target}.json?after=${this.nextPage}`)
-            .then(res => res.json())
-            .catch(err => {throw err})
+            .then(res => {
+                console.log(res)
+                if (res.status != 200) {
+                    throw new Error('subreddit doesnt exist')
+                } else {
+                    return res.json()
+                }
+            })
+            .catch(err => { throw err })
     }
     async parsePage(body) {
+        if (body.data.children.length == 0){
+            throw new Error('the subreddit has no data')
+        }
         this.nextPage = body.data.after
         for (let child of body.data.children) {
             if (!child['data']['preview']) continue
