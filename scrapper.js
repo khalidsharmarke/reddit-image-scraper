@@ -3,19 +3,28 @@ const fetch = require('node-fetch');
 const JSZip = require('jszip');
 
 class Scrapper {
-    constructor(url, num_of_images, name) {
+    constructor(url, num_of_images, name, mobile) {
         this.zip = new JSZip()
         this.target = url
         this.limit = num_of_images
         this.folder = this.zip.folder(name)
         this.count = 0
         this.nextPage = ''
+        if (mobile){
+            this.ratio = 0.5625
+        }else {
+            this.ratio = 1.7
+        }
     }
     async run() {
         while (this.count < this.limit) {
-            await this.getPage()
-                .then(json => this.parsePage(json))
-                .catch(err => console.log(err))
+            try {
+                await this.getPage()
+                    .then(json => this.parsePage(json))
+            } catch (err) {
+                console.error(err)
+                break
+            }
         }
         return this.zip.generateNodeStream({
             type: 'nodeBuffer',
@@ -25,13 +34,13 @@ class Scrapper {
     getPage() {
         return fetch(`${this.target}.json?after=${this.nextPage}`)
             .then(res => res.json())
-            .catch(err => err)
+            .catch(err => {throw err})
     }
     async parsePage(body) {
         this.nextPage = body.data.after
         for (let child of body.data.children) {
             if (!child['data']['preview']) continue
-            if (child['data']['preview']['images'][0]['source']['width'] <= 1.3 * (child['data']['preview']['images'][0]['source']['height'])) continue
+            if (child['data']['preview']['images'][0]['source']['width'] / child['data']['preview']['images'][0]['source']['height'] <= this.ratio) continue
 
             const imageTitle = child['data']['preview']['images'][0]['id']
             let imageUrl = child['data']['preview']['images'][0]['source']['url'];
@@ -60,9 +69,9 @@ class Scrapper {
     }
 }
 
-async function fulfillRequest(req_obj) {
-    const { url, num_of_images, subreddit } = req_obj;
-    return new Scrapper(url, num_of_images, subreddit).run()
+async function getZipFile(req_obj) {
+    const { url, num_of_images, subreddit, mobile } = req_obj;
+    return new Scrapper(url, num_of_images, subreddit, mobile).run()
 }
 
-module.exports = fulfillRequest
+module.exports = getZipFile

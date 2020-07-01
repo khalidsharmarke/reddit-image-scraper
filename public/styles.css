@@ -1,0 +1,59 @@
+body {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #F5D6BA;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.main {
+    width: 100%;
+    height: 100%;
+    animation: fadein 1s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.heading {
+    margin-top: 3%;
+    text-align: center;
+}
+
+.form {
+    width: 50%;
+    background-color: #2C2C54;
+    color: white;
+}
+
+.submit {
+    background-color: #F49D6E;
+}
+
+#loader {
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #3498db;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

@@ -1,7 +1,6 @@
 const url = require('url')
 
 function validateRequest(req, res, next) {
-    console.log(req.body)
     if (!req.body) {
         res.status(400).send('no request body, make requests using json bodies')
         return
@@ -36,14 +35,16 @@ function validateRequest(req, res, next) {
         res.status(400).send('please request a specific subreddit')
         return
     } else {
-        req.locals = { ...request, num_of_images: req.body.num_of_images }
+        req.locals = { ...request, 
+            num_of_images: req.body.num_of_images, 
+            mobile: req.query.mobile }
         next()
     }
 }
 
 function sanitizeRequest(req, res, next) {
     const { href, num_of_images } = req.locals
-    let { path } = req.locals
+    let { path, mobile } = req.locals
 
     path = path.slice(3, path.length)
     if (path[path.length - 1] == '/') {
@@ -54,10 +55,17 @@ function sanitizeRequest(req, res, next) {
         num_of_images = 50
     }
 
+    if (mobile == 'true'){
+        mobile = true
+    }else {
+        mobile = false
+    }
+
     req.locals = {
         url: href,
         subreddit: path,
-        num_of_images: num_of_images
+        num_of_images: num_of_images,
+        mobile: mobile
     }
     next()
 }
