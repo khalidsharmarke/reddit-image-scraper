@@ -46,8 +46,8 @@ function validateRequest(req, res, next) {
 }
 
 function sanitizeRequest(req, res, next) {
-    const { href, num_of_images } = req.locals
-    let { path, mobile } = req.locals
+    const { href } = req.locals
+    let { path, mobile, num_of_images } = req.locals
 
     path = path.slice(3, path.length)
     if (path[path.length - 1] == '/') {

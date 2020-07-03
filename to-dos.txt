@@ -1,0 +1,9 @@
+1) make a button to scrape the homepage of reddit
+	lets not allow users to request the homepage using the current form
+	just make a separate button below form
+
+2) cross browser capable
+
+3) better URL hints
+
+4) handle edge case for requests for less than 1
