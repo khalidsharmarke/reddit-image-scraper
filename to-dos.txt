@@ -4,6 +4,9 @@
 
 2) cross browser capable
 
-3) better URL hints
+3) better URL hints / better url handling
 
 4) handle edge case for requests for less than 1
+
+5) add progress bar
+
