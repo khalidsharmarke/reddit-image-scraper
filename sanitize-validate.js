@@ -10,6 +10,12 @@ function validateRequest(req, res, next) {
     } else if (isNaN(req.body.num_of_images)) {
         res.status(400).send('please request a number of images as an integer')
         return
+    }else if (req.body.num_of_images < 1){
+        res.status(400).send('please request a number of images larger than 1')
+        return
+    }else if (req.body.num_of_images % 1 != 1){
+        res.status(400).send('please request a number of images as an integer')
+        return
     }
     const request = url.parse(req.body.url)
 
@@ -20,7 +26,7 @@ function validateRequest(req, res, next) {
         res.status(400).send('please omit any queries from url')
         return
     } else if (request.hash) {
-        res.status(400).send('please omit any hashes from url')
+        res.status(400).send('please omit any hashes from url') 
         return
     } else if (request.search) {
         res.status(400).send('please omit any searches from url')
