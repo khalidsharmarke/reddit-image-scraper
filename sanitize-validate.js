@@ -43,7 +43,7 @@ function validateRequest(req, res, next) {
     } else {
         req.locals = { ...request,
             num_of_images: req.body.num_of_images,
-            mobile: req.query.mobile
+            mobile: req.body.mobile
         }
         next()
     }
@@ -52,6 +52,7 @@ function validateRequest(req, res, next) {
 function sanitizeRequest(req, res, next) {
     const { href } = req.locals
     let { path, mobile, num_of_images } = req.locals
+    console.log(typeof mobile)
 
     path = path.slice(3, path.length)
     if (path[path.length - 1] == '/') {
@@ -60,12 +61,6 @@ function sanitizeRequest(req, res, next) {
 
     if (num_of_images > 100) {
         num_of_images = 100
-    }
-
-    if (mobile == 'true') {
-        mobile = true
-    } else {
-        mobile = false
     }
 
     req.locals = {

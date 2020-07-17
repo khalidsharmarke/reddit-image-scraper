@@ -2,6 +2,7 @@
         const url = document.getElementById('url').value;
         const num_of_images = document.getElementById('num_of_images').value
 
+
         if (url == '' || num_of_images == '') {
             throw new Error('please fill form before submitting')
         } else if (!url.includes('http://www.reddit.com/r/') && !url.includes('https://www.reddit.com/r/')) {

@@ -43,7 +43,7 @@ class Scrapper {
             .catch(err => { throw err })
     }
     async parsePage(body) {
-        if (body.data.children.length == 0){
+        if (body.data.children.length == 0) {
             throw new Error('the subreddit has no data')
         }
         this.nextPage = body.data.after
@@ -80,6 +80,7 @@ class Scrapper {
 
 async function getZipFile(req_obj) {
     const { url, num_of_images, subreddit, mobile } = req_obj;
+    console.log(mobile)
     return new Scrapper(url, num_of_images, subreddit, mobile).run()
 }
 
