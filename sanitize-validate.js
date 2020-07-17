@@ -13,9 +13,6 @@ function validateRequest(req, res, next) {
     } else if (req.body.num_of_images < 1) {
         res.status(400).send('please request a number of images larger than 1')
         return
-    } else if (req.body.num_of_images % 1 != 1) {
-        res.status(400).send('please request a number of images as an integer')
-        return
     }
     const request = url.parse(req.body.url)
 
