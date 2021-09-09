@@ -2,7 +2,7 @@ const fs = require('fs');
 const fetch = require('node-fetch');
 const JSZip = require('jszip');
 
-class Scrapper {
+class Scraper {
     constructor(url, num_of_images, name, mobile) {
         this.zip = new JSZip()
         this.target = url

@@ -3,7 +3,7 @@ const app = express();
 const util = require('util')
 const streamPipeline = util.promisify(require('stream').pipeline);
 
-const getZipFile = require('./scrapper.js')
+const getZipFile = require('./scraper.js')
 const { sanitize, validate } = require('./sanitize-validate.js')
 app.use(express.json())
 app.use('/public', express.static(`${__dirname}/public`))
