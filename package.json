@@ -12,7 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "jszip": "^3.5.0",
+    "jszip": "^3.7.0",
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
