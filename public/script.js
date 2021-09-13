@@ -30,7 +30,7 @@
 
     function request() {
         const form = getForm()
-        return fetch('/', {
+        return fetch(window.location.href, {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'
